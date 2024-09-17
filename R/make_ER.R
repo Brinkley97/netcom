@@ -8,7 +8,7 @@
 #'
 #' @return An adjacency matrix.
 #' 
-#' @references BOOK: Network Science (P 75) by Albert
+#' @references BOOK: Network Science [P 75] by Albert
 #' 
 #' @examples
 #' # Example usage
