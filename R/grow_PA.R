@@ -26,7 +26,7 @@
 #' # Import netcom
 #' library(netcom)
 #' 
-#' size <- 10
+#' size <- 5
 #' existing_network <- matrix(sample(c(0,1), size = size^2, replace = TRUE), nrow = size, ncol = size)
 #' new_network_prep <- matrix(0, nrow = size + 1, ncol = size + 1)
 #' new_network_prep[1:size, 1:size] = existing_network
@@ -37,8 +37,10 @@
 grow_PA <- function(matrix, x, power, sum_v_max = "sum", nascent_help = TRUE, retcon = FALSE, directed = TRUE) {
     w <- x-1
 
-    out_degree <- rowSums(as.matrix(matrix[1:w, 1:w]))
-    in_degree <- colSums(as.matrix(matrix[1:w, 1:w]))
+    out_degree <- rowSums(as.matrix(matrix[1:w, 1:w])) # List of ints that rep the sum of links going out of each node
+    print(out_degree) 
+    in_degree <- colSums(as.matrix(matrix[1:w, 1:w])) # List of ints that rep the sum of links going in of each node
+    print(in_degree)
 
     ## Give all nodes an extra edge so there is some nonzero probability of new nodes accumulating edges
     ## Note: This is likely less biased at small degrees than adding an edge only to zero degree nodes
@@ -52,7 +54,9 @@ grow_PA <- function(matrix, x, power, sum_v_max = "sum", nascent_help = TRUE, re
 
     if (sum_v_max == "sum") {
         out_ratio <- out_power / sum(out_power)
+        print(out_ratio)
         in_ratio <- in_power / sum(in_power)
+        print(in_ratio)
     } else if (sum_v_max == "max") {
         out_ratio <- out_power / max(out_power)
         in_ratio <- in_power / max(in_power)        
@@ -62,8 +66,10 @@ grow_PA <- function(matrix, x, power, sum_v_max = "sum", nascent_help = TRUE, re
     }
 
 
-    out_new <- 1 * (stats::runif(w) <= out_ratio)
+    out_new <- 1 * (stats::runif(w) <= out_ratio) # List of either 0 or 1 (no link or link) to respective node 
+    print(out_new)
     in_new <- 1 * (stats::runif(w) <= in_ratio)
+    print(in_new)
 
     matrix[x, 1:x] = c(in_new, 0)
 
